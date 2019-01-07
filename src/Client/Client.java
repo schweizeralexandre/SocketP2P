@@ -11,7 +11,7 @@ public class Client {
 	private String Password;
 	private List<String> fichers;
 	
-	
+	// constructeur client
 	
 	
 	public Client(String nom, String prenom, String ipAddress, String userId, String password, List<String> fichers) {
