@@ -1,6 +1,7 @@
 package Client;
 
-import java.util.List;
+import java.util.ArrayList;
+
 
 public class Client {
 
@@ -9,12 +10,12 @@ public class Client {
 	private String IpAddress;
 	private String UserId;
 	private String Password;
-	private List<String> fichers;
+	private ArrayList<String> fichers;
 	
 	// constructeur client
 	
 	
-	public Client(String nom, String prenom, String ipAddress, String userId, String password, List<String> fichers) {
+	public Client(String nom, String prenom, String ipAddress, String userId, String password, ArrayList<String> fichers) {
 
 		
 		super();
@@ -64,15 +65,20 @@ public class Client {
 	public void setPassword(String password) {
 		Password = password;
 	}
-	public List<String> getFichers() {
+
+
+	public ArrayList<String> getFichers() {
 		return fichers;
 	}
-	public void setFichers(List<String> fichers) {
+
+
+	public void setFichers(ArrayList<String> fichers) {
 		this.fichers = fichers;
 	}
+
 	
 	
-	
+
 	
 	
 }
