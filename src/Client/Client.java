@@ -1,26 +1,29 @@
 package Client;
 
+
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 
 public class Client {
 
 	private String Nom;
-	private String Prenom;
 	private String IpAddress;
 	private String UserId;
 	private String Password;
 	private ArrayList<String> fichers;
+
 	
 	// constructeur client
 	
 	
-	public Client(String nom, String prenom, String ipAddress, String userId, String password, ArrayList<String> fichers) {
+	public void Clientest(String nom, String prenom, String ipAddress, String userId, String password, ArrayList<String> fichers) {
 
 		
-		super();
+		//super();
 		Nom = nom;
-		Prenom = prenom;
 		IpAddress = ipAddress;
 		UserId = userId;
 		Password = password;
@@ -35,18 +38,48 @@ public class Client {
 	
 	
 	
+	public Client() {
+		// TODO Auto-generated constructor stub
+	}
+
+
+	
+	public String getIpAddressByName(String Name) {
+		
+		if(this.Nom.equals(Name)){
+			
+		try {
+			this.IpAddress = InetAddress.getLocalHost().getHostAddress();
+			
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		return this.IpAddress;
+		
+		}
+		
+		else return "client n'existe pas";
+	}
+
+
+
+
+
+
+
+
+
 	public String getNom() {
 		return Nom;
 	}
 	public void setNom(String nom) {
 		Nom = nom;
 	}
-	public String getPrenom() {
-		return Prenom;
-	}
-	public void setPrenom(String prenom) {
-		Prenom = prenom;
-	}
+
 	public String getIpAddress() {
 		return IpAddress;
 	}
