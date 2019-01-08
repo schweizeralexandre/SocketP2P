@@ -25,8 +25,8 @@ public class MainClient {
 		 
 		
 		try {
-		socket = new Socket(client.getIpAddress(),4085);
-		
+		socket = new Socket("192.168.56.1",4085);
+		//jfikfjal
 		
 		socket.close();
 		
