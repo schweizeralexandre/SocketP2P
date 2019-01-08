@@ -1,10 +1,15 @@
 package Client;
 
 
+import java.io.File;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class Client {
@@ -12,22 +17,24 @@ public class Client {
 	private String Nom;
 	private String IpAddress;
 	private String UserId;
-	private String Password;
-	private ArrayList<String> fichers;
+	private static ArrayList<String> fichiers=new ArrayList<String>();
+	private File file;
+	private String IPServer = "192.168.56.1";
+	public static Socket socket=null;
+	private JFileChooser Directory = new JFileChooser();
 
 	
 	// constructeur client
 	
 	
-	public void Clientest(String nom, String prenom, String ipAddress, String userId, String password, ArrayList<String> fichers) {
+	public void Clientest(String nom, String prenom, String ipAddress, String userId, ArrayList<String> fichers) {
 
 		
 		//super();
 		Nom = nom;
 		IpAddress = ipAddress;
 		UserId = userId;
-		Password = password;
-		this.fichers = fichers;
+		this.fichiers = fichiers;
 	}
 	
 	
@@ -39,7 +46,21 @@ public class Client {
 	
 	
 	public Client() {
-		// TODO Auto-generated constructor stub
+		
+		
+		JFileChooser chooser = new JFileChooser();
+	   chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+	    int returnVal = chooser.showOpenDialog(new JFrame());
+	    if(returnVal == JFileChooser.APPROVE_OPTION) {
+	       System.out.println("You chose to open this file: " +
+	            chooser.getSelectedFile().getName());
+	    }
+	 
+	    File file = new File(chooser.getSelectedFile(),"");
+	    listFilesForFolder(file);
+		
+		
+
 	}
 
 
@@ -52,7 +73,7 @@ public class Client {
 			this.IpAddress = InetAddress.getLocalHost().getHostAddress();
 			
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		
@@ -66,8 +87,35 @@ public class Client {
 	}
 
 
+	// méthode qui permet de récupérer les fichiers
 
-
+	 public void listFilesForFolder(File folder) 
+		{
+		
+		 File file = new File(folder.getAbsolutePath());
+	     File[] files = file.listFiles();
+	   
+	    	 for (int i = 0; i < files.length; i++) 
+	    	    {
+	    		  try 
+	    		     {
+	    	         if( files[i].isFile())
+	    	         {
+	    	        	 fichiers.add(files[i].getName());
+	    	        	
+	    	         }
+	    	         else
+	    	         {
+	    	        	 listFilesForFolder(files[i]);
+	    	         }
+	    		     } catch (Exception e) {
+	    		 		
+	    		 	}
+	    	     }
+		
+	    
+		 
+		}
 
 
 
@@ -92,21 +140,14 @@ public class Client {
 	public void setUserId(String userId) {
 		UserId = userId;
 	}
-	public String getPassword() {
-		return Password;
-	}
-	public void setPassword(String password) {
-		Password = password;
-	}
-
 
 	public ArrayList<String> getFichers() {
-		return fichers;
+		return fichiers;
 	}
 
 
 	public void setFichers(ArrayList<String> fichers) {
-		this.fichers = fichers;
+		this.fichiers = fichers;
 	}
 
 	

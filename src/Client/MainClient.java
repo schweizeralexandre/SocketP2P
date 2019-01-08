@@ -17,7 +17,7 @@ public class MainClient {
 		Socket socket;
 	    PrintWriter out = null;
 		BufferedReader in = null;
-		String Name;
+		String message = null;
 		Client client = new Client();
 	    client.setIpAddress(InetAddress.getLocalHost().getHostAddress());
 		 
@@ -25,7 +25,9 @@ public class MainClient {
 		 
 		
 		try {
-		socket = new Socket("localhost",2501);
+		socket = new Socket(client.getIpAddress(),4085);
+		
+		
 		socket.close();
 		
 		} catch (IOException e) {
