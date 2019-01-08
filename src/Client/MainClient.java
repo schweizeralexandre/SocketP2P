@@ -25,7 +25,7 @@ public class MainClient {
 		 
 		
 		try {
-		socket = new Socket("192.168.56.1",4085);
+		socket = new Socket("192.168.56.1",4850);
 		//jfikfjal
 		
 		socket.close();
