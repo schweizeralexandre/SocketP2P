@@ -307,8 +307,8 @@ class getFile extends Thread
 	getFile(String ip,String file)
 	{
 		try {
-			Socket socket = new Socket(ip,4554);
-			System.out.println("connected to the client");
+			Socket socket = new Socket(ip,4554) ;
+			System.out.println("Connected to the client") ;
 			BufferedReader comin = null;
 			PrintWriter comout ;
 			 comin= new BufferedReader(new InputStreamReader(socket.getInputStream()));
