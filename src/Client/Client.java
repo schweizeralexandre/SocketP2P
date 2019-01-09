@@ -345,7 +345,15 @@ class getFile extends Thread
 	 	    BufferedOutputStream bos = null;
 	 	    PrintWriter  out;
 	 	   	BufferedReader   in;
-	 	   	
+	 	   String desti="";
+	 	   JFileChooser chooser = new JFileChooser();
+		   chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		    int returnVal = chooser.showOpenDialog(new JFrame());
+		    if(returnVal == JFileChooser.APPROVE_OPTION) {
+		       System.out.println("You chose to open this file: " +
+		         chooser.getSelectedFile().getName());
+		        desti=chooser.getSelectedFile().getAbsolutePath();
+		    }
 			Socket socket = new Socket(ip,4554) ;
 			 final int FILE_SIZE = 999999999; 
 			System.out.println("Connected to the client") ;
@@ -356,7 +364,7 @@ class getFile extends Thread
 			comout.println(file);
 			comout.flush();
 			 byte [] mybytearray  = new byte [FILE_SIZE];
-		      fos = new FileOutputStream("C:\\User\\"+file);
+		      fos = new FileOutputStream(desti+"\\"+file);
 		 	     System.out.println(file);
 		 	    InputStream is = socket.getInputStream();
 		 	      bos = new BufferedOutputStream(fos);
