@@ -166,6 +166,7 @@ public class Client {
 					String ip=in.readLine();
 					System.out.println("ip : "+ip);
 					getFile get = new getFile(ip, filename);
+					get.start();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -312,7 +313,7 @@ class getFile extends Thread
 			PrintWriter comout ;
 			 comin= new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			comout = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-			comout.print(file);
+			comout.println(file);
 			comout.flush();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
