@@ -1,10 +1,16 @@
 package Client;
 
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -22,6 +28,7 @@ public class Client {
 	private String Nom;
 	private String UserId;
 	private static ArrayList<String> fichiers = new ArrayList<String>();
+	private static ArrayList<String> fichiersabsolute = new ArrayList<String>();
 	private static ArrayList<String> fichiersOntheServer = new ArrayList<String>();
 	private File file;
 	private String IPServer = "192.168.56.1";
@@ -32,7 +39,7 @@ public class Client {
 	BufferedReader in = null;
 	String message = null;
 	String name = "";
-    
+    String path="";
 
 	
 	// constructeur client
@@ -91,6 +98,7 @@ public class Client {
 	    if(returnVal == JFileChooser.APPROVE_OPTION) {
 	       System.out.println("You chose to open this file: " +
 	            chooser.getSelectedFile().getName());
+	      
 	    }
 	 
 	    File file = new File(chooser.getSelectedFile(),"");
@@ -123,6 +131,7 @@ public class Client {
 				BufferedReader comin = null;
 				PrintWriter comout ;
 				String fileresquest = null;
+				String path="";
 				while(true)
 				{
 					
@@ -136,6 +145,28 @@ public class Client {
 						 fileresquest=comin.readLine();
 					
 					System.out.println("he asked for "+fileresquest);
+					for (String string : fichiersabsolute) 
+					{
+						if(string.contains(fileresquest))
+						{
+							path=string;
+							break;
+						}
+					}
+					System.out.println("sending..");
+			         File myFile = new File (path);
+			          byte [] mybytearray  = new byte [(int)myFile.length()];
+			    	  FileInputStream fis = null;
+			  	    BufferedInputStream bis = null;
+			  	    OutputStream os = null;
+			          fis = new FileInputStream(myFile);
+			          bis = new BufferedInputStream(fis);
+			          bis.read(mybytearray,0,mybytearray.length);
+			          os = socket.getOutputStream();
+			          System.out.println("Sending " + name + "(" + mybytearray.length + " bytes)");
+			          os.write(mybytearray,0,mybytearray.length);
+			          os.flush();
+			          System.out.println("Done.");
 				}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -258,6 +289,7 @@ public class Client {
 	    	         if( files[i].isFile())
 	    	         {
 	    	        	fichiers.add(files[i].getName());
+	    	        	fichiersabsolute.add(files[i].getAbsolutePath());
 	    	        	//System.out.println("MOMO : "+files[i].getPath());
 	    	        	//absolutefilespath.add(files[i].getAbsolutePath());
 	    	         }
@@ -307,7 +339,15 @@ class getFile extends Thread
 	getFile(String ip,String file)
 	{
 		try {
+			int bytesRead;
+	 	    int current = 0;
+	 	    FileOutputStream fos = null;
+	 	    BufferedOutputStream bos = null;
+	 	    PrintWriter  out;
+	 	   	BufferedReader   in;
+	 	   	
 			Socket socket = new Socket(ip,4554) ;
+			 final int FILE_SIZE = 999999999; 
 			System.out.println("Connected to the client") ;
 			BufferedReader comin = null;
 			PrintWriter comout ;
@@ -315,6 +355,22 @@ class getFile extends Thread
 			comout = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
 			comout.println(file);
 			comout.flush();
+			 byte [] mybytearray  = new byte [FILE_SIZE];
+		      fos = new FileOutputStream("C:\\User\\"+file);
+		 	     System.out.println(file);
+		 	    InputStream is = socket.getInputStream();
+		 	      bos = new BufferedOutputStream(fos);
+		 	      bytesRead = is.read(mybytearray,0,mybytearray.length);
+		 	      current = bytesRead;
+			
+		     
+			   do {
+		 	         bytesRead=is.read(mybytearray, current, (mybytearray.length-current));
+		 	         if(bytesRead >= 0) current += bytesRead;
+		 	      } while(bytesRead > -1);
+		 	      System.out.println("out of the loop");
+		 	      bos.write(mybytearray, 0 , current);
+		 	      bos.flush();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
